@@ -6,7 +6,7 @@ public class EmployeeWage  {
 	public static final int isFullTime = 2;
 	public static final int workingDays = 30;
 
-	public static void main(String[] args) 
+	public static void calculateWage() 
 	{
 		int empHours = 0;
 		int empWage = 0;
@@ -19,7 +19,6 @@ public class EmployeeWage  {
 			day++;
 			totalWorkingDays++;
 			int empCheck=((int)Math.floor(Math.random()*10))%3;
-
 			switch(empCheck)
 			{
 				case isFullTime:
@@ -42,5 +41,9 @@ public class EmployeeWage  {
 		System.out.println("Maximum working hours: " + totalWorkingHours);
 		System.out.println("Maximum working days: " + totalWorkingDays);
 		System.out.println("Total employee's wage for maximum of " + workingHours + " hours or " + workingDays + " days is: " + totalEmpWage);
+	}
+	public static void main(String[] args)
+	{
+		calculateWage(); // Directly calling function without creating obj 'cause its a static one.
 	}
 }
