@@ -1,15 +1,11 @@
-public class EmployeeWage {
+class CompanyEmpWage {
+	public final String companyName;
+	public final int empWagePerHour;
+	public final int workingDays;
+	public final int workingHours;
+	public int totalEmpWage;
 
-	public static final int isPartTime = 1;
-	public static final int isFullTime = 2;
-
-	private final String companyName;
-	private final int empWagePerHour;
-	private final int workingDays;
-	private final int workingHours;
-	private int totalEmpWage;
-
-	public EmployeeWage(String companyName, int empWagePerHour, int workingHours, int workingDays)
+	public CompanyEmpWage(String companyName, int empWagePerHour, int workingHours, int workingDays)
 	{
 		this.companyName = companyName;
 		this.empWagePerHour = empWagePerHour;
@@ -17,14 +13,47 @@ public class EmployeeWage {
 		this.workingDays = workingDays;
 	}
 
-	public void calculateWage() 
+	public void setTotalEmpWage(int totalEmpWage) {
+		this.totalEmpWage = totalEmpWage;
+	}
+
+	@Override
+	public String toString() {
+		return "Total employee's wage of " +companyName+ " for maximum of " +workingHours+ " hours or " +workingDays+ " days is: " +totalEmpWage+ "\n";
+	}
+}
+public class EmployeeWage {
+
+	public static final int isPartTime = 1;
+	public static final int isFullTime = 2;
+
+	private int numOfCompany = 0;
+	private CompanyEmpWage[] companyEmpWageArray;
+
+	public EmployeeWage() {
+		companyEmpWageArray = new CompanyEmpWage[5];
+	}
+
+	public void addCompanyEmpWage(String companyName, int empWagePerHour, int workingDays, int workingHours) {
+		companyEmpWageArray[numOfCompany] = new CompanyEmpWage(companyName, empWagePerHour, workingDays, workingHours);
+		numOfCompany++;
+	}
+
+	private void calculateWage() {
+		for (int i=0; i<numOfCompany; i++) {
+			companyEmpWageArray[i].setTotalEmpWage(this.calculateWage(companyEmpWageArray[i]));
+			System.out.println(companyEmpWageArray[i]);
+		}
+	}
+
+	private int calculateWage(CompanyEmpWage companyEmpWage) 
 	{
 		int empHours = 0;
 		int empWage = 0;
 		int totalWorkingDays = 0;
 		int totalWorkingHours = 0;
 
-		while(totalWorkingHours<workingHours && totalWorkingDays<workingDays)
+		while(totalWorkingHours<companyEmpWage.workingHours && totalWorkingDays<companyEmpWage.workingDays)
 		{	
 			totalWorkingDays++;
 			int empCheck=((int)Math.floor(Math.random()*10))%3;
@@ -41,21 +70,14 @@ public class EmployeeWage {
 			}
 			totalWorkingHours += empHours;
 		}
-		totalEmpWage = totalWorkingHours * empWagePerHour;
-	}
-
-	@Override
-	public String toString() {
-		return "Total employee's wage of " +companyName+ " for maximum of " +workingHours+ " hours or " +workingDays+ " days is: " +totalEmpWage+ "\n";
+		return totalWorkingHours * companyEmpWage.empWagePerHour;
 	}
 
 	public static void main(String[] args)
 	{
-		EmployeeWage dmart = new EmployeeWage("Dmart", 20, 100, 30);
-		EmployeeWage walmart = new EmployeeWage("Walmart", 30, 100, 30);
-		dmart.calculateWage();
-		System.out.println(dmart);
-		walmart.calculateWage();
-		System.out.println(walmart);
+		EmployeeWage employeeWage = new EmployeeWage();
+		employeeWage.addCompanyEmpWage("Dmart", 20, 100, 30);
+		employeeWage.addCompanyEmpWage("Walmart", 30, 100, 30);
+		employeeWage.calculateWage();
 	}
 }
