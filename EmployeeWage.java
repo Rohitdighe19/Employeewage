@@ -1,3 +1,8 @@
+interface InterfaceCalculateWage {
+	public void addCompanyEmpWage(String companyName, int empWagePerHour, int workingHours, int workingDays);
+	public void calculateWage();
+}
+
 class CompanyEmpWage {
 	public final String companyName;
 	public final int empWagePerHour;
@@ -22,7 +27,7 @@ class CompanyEmpWage {
 		return "Total employee's wage of " +companyName+ " for maximum of " +workingHours+ " hours or " +workingDays+ " days is: " +totalEmpWage+ "\n";
 	}
 }
-public class EmployeeWage {
+public class EmployeeWage implements InterfaceCalculateWage {
 
 	public static final int isPartTime = 1;
 	public static final int isFullTime = 2;
@@ -39,7 +44,7 @@ public class EmployeeWage {
 		numOfCompany++;
 	}
 
-	private void calculateWage() {
+	public void calculateWage() {
 		for (int i=0; i<numOfCompany; i++) {
 			companyEmpWageArray[i].setTotalEmpWage(this.calculateWage(companyEmpWageArray[i]));
 			System.out.println(companyEmpWageArray[i]);
