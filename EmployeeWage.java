@@ -1,3 +1,5 @@
+import java.util.*;
+
 interface InterfaceCalculateWage {
 	public void addCompanyEmpWage(String companyName, int empWagePerHour, int workingHours, int workingDays);
 	public void calculateWage();
@@ -33,21 +35,22 @@ public class EmployeeWage implements InterfaceCalculateWage {
 	public static final int isFullTime = 2;
 
 	private int numOfCompany = 0;
-	private CompanyEmpWage[] companyEmpWageArray;
+	private ArrayList<CompanyEmpWage> companyEmpWageArrayList;
 
 	public EmployeeWage() {
-		companyEmpWageArray = new CompanyEmpWage[5];
+			companyEmpWageArrayList = new ArrayList<>();
 	}
 
 	public void addCompanyEmpWage(String companyName, int empWagePerHour, int workingDays, int workingHours) {
-		companyEmpWageArray[numOfCompany] = new CompanyEmpWage(companyName, empWagePerHour, workingDays, workingHours);
-		numOfCompany++;
+		CompanyEmpWage companyEmpWage = new CompanyEmpWage(companyName, empWagePerHour, workingDays, workingHours);
+		companyEmpWageArrayList.add(companyEmpWage);
 	}
 
 	public void calculateWage() {
-		for (int i=0; i<numOfCompany; i++) {
-			companyEmpWageArray[i].setTotalEmpWage(this.calculateWage(companyEmpWageArray[i]));
-			System.out.println(companyEmpWageArray[i]);
+		for (int i=0; i<companyEmpWageArrayList.size(); i++) {
+			CompanyEmpWage companyEmpWage = companyEmpWageArrayList.get(i);
+			companyEmpWage.setTotalEmpWage(this.calculateWage(companyEmpWage));
+			System.out.println(companyEmpWage);
 		}
 	}
 
