@@ -36,9 +36,11 @@ public class EmployeeWage implements InterfaceCalculateWage {
 
 	private int numOfCompany = 0;
 	private ArrayList<CompanyEmpWage> companyEmpWageArrayList;
+	private ArrayList<Integer> dailyWageList;
 
 	public EmployeeWage() {
 			companyEmpWageArrayList = new ArrayList<>();
+			dailyWageList = new ArrayList<>();
 	}
 
 	public void addCompanyEmpWage(String companyName, int empWagePerHour, int workingDays, int workingHours) {
@@ -51,6 +53,12 @@ public class EmployeeWage implements InterfaceCalculateWage {
 			CompanyEmpWage companyEmpWage = companyEmpWageArrayList.get(i);
 			companyEmpWage.setTotalEmpWage(this.calculateWage(companyEmpWage));
 			System.out.println(companyEmpWage);
+		}
+	}
+
+	public void computeDailyWage() {
+		for (int j=0; j<dailyWageList.size(); j++) {
+			System.out.println("Daily wage of employee is: " + dailyWageList.get(j));
 		}
 	}
 
@@ -76,6 +84,8 @@ public class EmployeeWage implements InterfaceCalculateWage {
 				default:
 					empHours = 0;
 			}
+			int dailyWage = empHours * companyEmpWage.empWagePerHour;
+			dailyWageList.add(dailyWage);
 			totalWorkingHours += empHours;
 		}
 		return totalWorkingHours * companyEmpWage.empWagePerHour;
@@ -84,8 +94,8 @@ public class EmployeeWage implements InterfaceCalculateWage {
 	public static void main(String[] args)
 	{
 		EmployeeWage employeeWage = new EmployeeWage();
-		employeeWage.addCompanyEmpWage("Dmart", 20, 100, 30);
 		employeeWage.addCompanyEmpWage("Walmart", 30, 100, 30);
 		employeeWage.calculateWage();
+		employeeWage.computeDailyWage();
 	}
 }
