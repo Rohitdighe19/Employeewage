@@ -3,6 +3,7 @@ import java.util.*;
 interface InterfaceCalculateWage {
 	public void addCompanyEmpWage(String companyName, int empWagePerHour, int workingHours, int workingDays);
 	public void calculateWage();
+	public int getTotalWage(String companyName);
 }
 
 class CompanyEmpWage {
@@ -18,6 +19,7 @@ class CompanyEmpWage {
 		this.empWagePerHour = empWagePerHour;
 		this.workingHours = workingHours;
 		this.workingDays = workingDays;
+		totalEmpWage = 0;
 	}
 
 	public void setTotalEmpWage(int totalEmpWage) {
@@ -36,16 +38,17 @@ public class EmployeeWage implements InterfaceCalculateWage {
 
 	private int numOfCompany = 0;
 	private ArrayList<CompanyEmpWage> companyEmpWageArrayList;
-	private ArrayList<Integer> dailyWageList;
+	private Map<String, CompanyEmpWage> companyToEmpWageMap;
 
 	public EmployeeWage() {
 			companyEmpWageArrayList = new ArrayList<>();
-			dailyWageList = new ArrayList<>();
+			companyToEmpWageMap = new HashMap<>();
 	}
 
 	public void addCompanyEmpWage(String companyName, int empWagePerHour, int workingDays, int workingHours) {
 		CompanyEmpWage companyEmpWage = new CompanyEmpWage(companyName, empWagePerHour, workingDays, workingHours);
 		companyEmpWageArrayList.add(companyEmpWage);
+		companyToEmpWageMap.put(companyName, companyEmpWage);
 	}
 
 	public void calculateWage() {
@@ -56,10 +59,9 @@ public class EmployeeWage implements InterfaceCalculateWage {
 		}
 	}
 
-	public void computeDailyWage() {
-		for (int j=0; j<dailyWageList.size(); j++) {
-			System.out.println("Daily wage of employee is: " + dailyWageList.get(j));
-		}
+	@Override
+	public int getTotalWage(String companyName) {
+		return companyToEmpWageMap.get(companyName).totalEmpWage;
 	}
 
 	private int calculateWage(CompanyEmpWage companyEmpWage) 
@@ -84,8 +86,6 @@ public class EmployeeWage implements InterfaceCalculateWage {
 				default:
 					empHours = 0;
 			}
-			int dailyWage = empHours * companyEmpWage.empWagePerHour;
-			dailyWageList.add(dailyWage);
 			totalWorkingHours += empHours;
 		}
 		return totalWorkingHours * companyEmpWage.empWagePerHour;
@@ -94,8 +94,9 @@ public class EmployeeWage implements InterfaceCalculateWage {
 	public static void main(String[] args)
 	{
 		EmployeeWage employeeWage = new EmployeeWage();
+		employeeWage.addCompanyEmpWage("Dmart", 30, 100, 30);
 		employeeWage.addCompanyEmpWage("Walmart", 30, 100, 30);
 		employeeWage.calculateWage();
-		employeeWage.computeDailyWage();
+		System.out.println("Total wage for Walmart company: " + employeeWage.getTotalWage("Walmart"));
 	}
 }
